@@ -128,12 +128,15 @@ else:
         {wrapper_name}->config_data_in = 0;
     """
 chip_init += f"""
-    {step_command}
+    {wrapper_name}->eval();
+    {step_trace_body}
 """
 
 chip_reset = f"""
     {wrapper_name}->reset_pad = 1;
-    {step_command}
+    for (int i = 0; i < NUM_RESET_CYCLES; i++) {{
+        {next_command}
+    }}
     {wrapper_name}->reset_pad = 0;
     {step_command}
 """
