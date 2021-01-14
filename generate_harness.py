@@ -70,6 +70,14 @@ output_body = ""
 file_close = ""
 wrapper_name = args.wrapper_module_name
 
+step_trace_args = ""
+step_trace_body = ""
+if args.trace:
+    step_trace_args = ", uint32_t &time_step, VerilatedVcdC* tfp"
+    step_trace_body = f"""
+        tfp->dump(time_step);
+        time_step++;
+    """
 
 includes = f"""
 #include "V{wrapper_name}.h"
@@ -292,15 +300,6 @@ for module in io_collateral:
 
     file_close += f"""
         {module}_file.close();
-    """
-
-step_trace_args = ""
-step_trace_body = ""
-if args.trace:
-    step_trace_args = ", uint32_t &time_step, VerilatedVcdC* tfp"
-    step_trace_body = f"""
-        tfp->dump(time_step);
-        time_step++;
     """
 
 step_def = f"""\
