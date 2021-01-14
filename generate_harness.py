@@ -128,14 +128,14 @@ else:
         {wrapper_name}->config_data_in = 0;
     """
 chip_init += f"""
-    {wrapper_name}->eval();
+    {step_command}
 """
 
 chip_reset = f"""
     {wrapper_name}->reset_pad = 1;
-    {wrapper_name}->eval();
+    {step_command}
     {wrapper_name}->reset_pad = 0;
-    {wrapper_name}->eval();
+    {step_command}
 """
 
 if (args.use_jtag):
