@@ -145,8 +145,8 @@ chip_reset = f"""
     for (int i = 0; i < NUM_RESET_CYCLES; i++) {{
         {next_command}
     }}
-    {step_command}
     {wrapper_name}->reset_pad = 0;
+    {step_command}
 """
 
 if (args.use_jtag):
