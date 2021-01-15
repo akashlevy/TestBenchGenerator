@@ -141,11 +141,11 @@ chip_init += f"""
 """
 
 chip_reset = f"""
-    {step_command}
     {wrapper_name}->reset_pad = 1;
     for (int i = 0; i < NUM_RESET_CYCLES; i++) {{
         {next_command}
     }}
+    {step_command}
     {wrapper_name}->reset_pad = 0;
 """
 
