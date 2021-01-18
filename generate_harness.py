@@ -16,6 +16,7 @@ parser.add_argument('--output-chunk-size', help="Size in bits of the data in the
 parser.add_argument('--output-file-name', help="Name of the generated harness file", default="harness.cpp")
 parser.add_argument('--use-jtag', help="Should this test harness use JTAG to write config", default=False, action="store_true")
 parser.add_argument('--verify-config', help="Should this test harness read back all the config after writing", default=False, action="store_true")
+parser.add_argument('--nems', help="Use long stall for NEMS configuration", default=True, action="store_true")
 parser.add_argument('--trace', action="store_true", help=trace_help_string)
 parser.add_argument('--trace-file-name', default="top_tb.vcd")
 parser.add_argument('--quiet', action="store_true", help="Silence cycle counter")
@@ -183,6 +184,13 @@ if (args.use_jtag):
         jtag.unstall();
     """
 elif reset_in_pad is not None:
+    if (args.nems):
+        unstall += f"""\
+// Stall 20000 cycles for NEMS
+for (int i = 0; i < 20000; i++) {{
+    {next_command}
+}}
+"""
     unstall += f"""\
 {wrapper_name}->{reset_in_pad}_in = (0 << {pad_bit}); // UNSTALL"""
 
